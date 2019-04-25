@@ -57,6 +57,8 @@ module Yabeda
 
       def register_metric(metric)
         name = [metric.group, metric.name].compact.join("_")
+        return if ::Yabeda.metrics.key?(name)
+
         ::Yabeda.define_singleton_method(name) { metric }
         ::Yabeda.metrics[name] = metric
         ::Yabeda.adapters.each_value { |adapter| adapter.register!(metric) }
